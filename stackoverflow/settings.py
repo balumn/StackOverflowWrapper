@@ -140,3 +140,5 @@ STATICFILES_DIRS = (
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 STACKOVERFLOW_URL = 'https://api.stackexchange.com/2.2/search/advanced'
+PER_MINUTE_LIMIT = 5
+PER_DAY_LIMIT = 100

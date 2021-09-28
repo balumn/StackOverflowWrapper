@@ -3,11 +3,31 @@
 
 {%load crispy_forms_tags %}
 
+<style>
+    .alert-error {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+    }
+</style>
+<div class="card-body col-lg-6 col-md-10 col-sm-10">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true"> &emsp;&times;</button>
+        {{message}}
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
+
 <div class="card">
     <div class="card-header card-header-warning">
         <a href="/">
             <h4 class="card-title">Search Stack Overflow</h4>
         </a>
+    </div>
+    <div class="row">
     </div>
     <div class="card-body ol-md-12" style="width: 100%">
         <form method="post">
@@ -83,6 +103,14 @@
                 </div>
                 <div class="form-group col-md-2 mb-0">
                     {{ form.views|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4 mb-0">
+                    {{ form.tagged|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4 mb-0">
+                    {{ form.nottagged|as_crispy_field }}
                 </div>
             </div>
             <a type="button" class="btn btn-success">Cancel</a>
