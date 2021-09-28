@@ -2,8 +2,7 @@ from django.shortcuts import render
 from django.views.generic import FormView
 from .forms import QuestionForm
 from .models import Question, Search
-from .utils import so_advanced_search
-
+from .utils import so_advanced_search, monitor_search
 
 class SearchView(FormView):
     template_name = 'questions/search.html'
@@ -21,6 +20,9 @@ class SearchView(FormView):
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
+
+        if not monitor_search(request):
+            return self.form_invalid(form, **kwargs)
         if form.is_valid():
             return self.form_valid(form, **kwargs)
         else:
