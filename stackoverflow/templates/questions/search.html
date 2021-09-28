@@ -105,6 +105,14 @@
                     {{ form.views|as_crispy_field }}
                 </div>
             </div>
+            <div class="form-row">
+                <div class="form-group col-md-4 mb-0">
+                    {{ form.tagged|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4 mb-0">
+                    {{ form.nottagged|as_crispy_field }}
+                </div>
+            </div>
             <a type="button" class="btn btn-success">Cancel</a>
             <button class="btn btn-warning" type="submit">Create</button>
         </form>

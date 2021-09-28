@@ -20,7 +20,6 @@ class SearchView(FormView):
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-
         if not monitor_search(request):
             return self.form_invalid(form, **kwargs)
         if form.is_valid():
@@ -41,14 +40,14 @@ class SearchView(FormView):
         del question_data['site']
         question = Question.objects.filter(**question_data)
         if question.exists():
-            print("exists")
+            print("data exists")
             search = Search.objects.filter(question=question.first())
             if search.exists():
                 answer = search[0].answer
                 context["show_results"] = True
                 context["answers"] = answer
         else:
-            print("not exists")
+            print("data does not exists; fetching...")
             question = Question.objects.create(**question_data)
             response = so_advanced_search(form.cleaned_data)
             if 'error' in response:
