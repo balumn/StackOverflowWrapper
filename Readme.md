@@ -12,8 +12,6 @@
 		python manage.py makemigrations
 		python manage.py migrate
 		
-	    
-
 #### Run
 
 	python manage.py runserver 0:3005
