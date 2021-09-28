@@ -15,4 +15,5 @@
 #### Run
 
 	python manage.py runserver 0:3005
-	
+
+open 0.0.0.0:3005 in broswer
