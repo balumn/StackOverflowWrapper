@@ -1,0 +1,190 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+
+{%load crispy_forms_tags %}
+
+<div class="card">
+    <div class="card-header card-header-warning">
+        <a href="/">
+            <h4 class="card-title">Search Stack Overflow</h4>
+        </a>
+    </div>
+    <div class="card-body ol-md-12" style="width: 100%">
+        <form method="post">
+            {% csrf_token %}
+            <!-- {{ form|crispy }} -->
+            <div class="form-row ">
+                <div class="form-group col-md-4 mb-0">
+                    {{ form.page|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4 mb-0">
+                    {{ form.pagesize|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4 mb-0">
+                    {{ form.fromdate|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4 mb-0">
+                    {{ form.todate|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4 mb-0">
+                    {{ form.min|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4 mb-0">
+                    {{ form.max|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-2 mb-0">
+                    {{ form.order|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-6 mb-0">
+                    {{ form.sort|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4 mb-0">
+                    {{ form.q|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4 mb-0">
+                    {{ form.answers|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4 mb-0">
+                    {{ form.body|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-2 mb-0">
+                    {{ form.accepted|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-2 mb-0">
+                    {{ form.closed|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-2 mb-0">
+                    {{ form.migrated|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-2 mb-0">
+                    {{ form.notice|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-2 mb-0">
+                    {{ form.wiki|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4 mb-0">
+                    {{ form.title|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4 mb-0">
+                    {{ form.url|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-2 mb-0">
+                    {{ form.user|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-2 mb-0">
+                    {{ form.views|as_crispy_field }}
+                </div>
+            </div>
+            <a type="button" class="btn btn-success">Cancel</a>
+            <button class="btn btn-warning" type="submit">Create</button>
+        </form>
+    </div>
+</div>
+
+{% if show_results %}
+
+<div class="card">
+    <div class="row card-body">
+        <div class="col panel-body">
+            <table id="resultTable" class="table table-striped table-bordered dt-responsive sortable display"
+                width="100%" style="width:100%">
+                <thead>
+                    <tr>
+                        <th> <b> Qn ID </b></th>
+                        <th> <b> Title </b></th>
+                        <th> <b> Score </b></th>
+                        <th> <b> Link </b></th>
+                        <th> <b> Answer Count </b></th>
+                        <th> <b> User </b></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for x in answers.data %}
+                    <tr>
+                        <td>{{ x.question_id }}</td>
+                        <td>{{ x.title | safe }}</td>
+                        <td>{{ x.score }}</td>
+                        <td> <a href="{{ x.link }}" target="blank">{{ x.link }}</a></td>
+                        <td>{{ x.answer_count }}</td>
+                        <td>
+                            <a href="{{ x.owner.link }}" target="blank">
+                                <img src="{{ x.owner.profile_image }}" width="50px"><br>
+                                {{ x.owner.display_name }}
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+<script>
+
+    $(document).ready(function () {
+        $('#resultTable').DataTable({
+            responsive: true,
+            ordering: true,
+        });
+    });
+
+    // Wait for the dom to be loaded
+    document.addEventListener('DOMContentLoaded', function (event) {
+
+        // Setup an XMLHttpRequest / AJAX request
+        var request = new XMLHttpRequest();
+        request.open('GET', 'http://www.reddit.com/subreddits.json');
+
+        // Setup an "event listener".
+        request.onload = function () {
+            if (request.status >= 200 && request.status < 400) {
+                var response = JSON.parse(request.responseText.toString());
+
+                response.data.children.forEach(function (el) {
+                    addListEntry(el.data.display_name, "Subs: " + el.data.subscribers);
+                });
+            }
+        };
+
+        // Send our request
+        request.send();
+    });
+
+
+    // Break the list adding code into a function for easier re-use
+    function addListEntry(value, text) {
+
+        // Create a new option element.
+        var optionNode = document.createElement("option");
+
+        // Set the value
+        optionNode.value = value;
+
+        // create a text node and append it to the option element
+        optionNode.appendChild(document.createTextNode(text));
+
+        // Add the optionNode to the datalist
+        document.getElementById("hosting-plan").appendChild(optionNode);
+
+    }
+
+
+
+
+</script>
+
+
+{% endblock %}

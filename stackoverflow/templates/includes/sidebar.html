@@ -1,0 +1,83 @@
+<div class="sidebar" data-color="purple" data-background-color="white" data-image="/static/assets/img/sidebar-1.jpg">
+  <div class="logo">
+    <a target="_blank" rel="noopener noreferrer"
+      href="/" class="simple-text logo-normal">
+      stackoverflow
+    </a>
+  </div>
+  <div class="sidebar-wrapper">
+    <ul class="nav">
+      {% if request.user.is_authenticated %}
+
+      <li class="nav-item {% if 'index' in segment %} active {% endif %}">
+        <a class="nav-link" href="/">
+          <i class="material-icons">dashboard</i>
+          <p>Dashboard</p>
+        </a>
+      </li>
+      <li class="nav-item {% if 'user-profile' in segment %} active {% endif %}">
+        <a class="nav-link" href="{% url 'user-profile' %}">
+          <i class="material-icons">person</i>
+          <p>User Profile</p>
+        </a>
+      </li>
+      {% if user.is_admin %}
+      <li class="nav-item {% if 'role-list' in segment %} active {% endif %}">
+        <a class="nav-link" href="{% url 'roles-list' %}">
+          <i class="material-icons">people</i>
+          <p>User Roles</p>
+        </a>
+      </li>
+
+      <li class="nav-item {% if 'role-list' in segment %} active {% endif %}">
+        <a class="nav-link" href="{% url 'trunks-home' %}">
+          <i class="material-icons">people</i>
+          <p>Accounts</p>
+        </a>
+      </li>
+
+      <li class="nav-item {% if 'ui-notifications' in segment %} active {% endif %}">
+        <a class="nav-link" href="/ui-notifications.html">
+          <i class="material-icons">notifications</i>
+          <p>Notifications</p>
+        </a>
+      </li>
+
+      {% endif %}
+
+      <li class="nav-item ">
+        <a class="nav-link" href="{% url 'prefix-home' %}">
+          <i class="material-icons">file_upload</i>
+          <p>MCC/MNC</p>
+        </a>
+      </li>
+
+      <li class="nav-item ">
+        <a class="nav-link" href="{% url 'routes-list' %}">
+          <i class="material-icons">route</i>
+          <p>Routes</p>
+        </a>
+      </li>
+
+      <li class="nav-item ">
+        <a class="nav-link" href="{% url 'reports-list' %}">
+          <i class="material-icons">analytics</i>
+          <p>Reports</p>
+        </a>
+      </li>
+
+      <li class="nav-item ">
+        <a class="nav-link" href="{% url 'logout' %}">
+          <i class="material-icons">directions_run</i>
+          <p>Logout</p>
+        </a>
+      </li>
+
+      {% endif %}
+
+
+
+    </ul>
+  </div>
+
+</div>
