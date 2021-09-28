@@ -4,11 +4,6 @@ from .forms import QuestionForm
 from .models import Question, Search
 from .utils import so_advanced_search
 
-def index(request):
-    context = {}
-    context['segment'] = 'index'
-    html_template = loader.get_template( 'index.html' )
-    return HttpResponse(html_template.render(context, request))
 
 class SearchView(FormView):
     template_name = 'questions/search.html'
